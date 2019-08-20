@@ -15,13 +15,13 @@ namespace Iotconsumer
     {
         static void Main(string[] args)
         {
-            string IotEndPoint = "awsiotendpoint.amazonaws.com";
+            string IotEndPoint = "112358906604.iot.us-east-1.amazonaws.com";
 
             int BrokerPort = 8883;
-            string Topic = "Hello/World";
+            string Topic = "My_Iot_SNS_Topic/TutorialX1";
 
-            var CaCert = X509Certificate.CreateFromCertFile(@"C:\Iotdevices\dotnetdevice\root-CA.crt");
-            var clientCert = new X509Certificate2(@"C:\Iotdevices\dotnetdevice\dotnet_devicecertificate.pfx", "password1");
+            var CaCert = X509Certificate.CreateFromCertFile(@"..\..\..\..\Certificates\f489713a83-certificate.pem.crt");
+            var clientCert = new X509Certificate2(@"..\..\..\..\Certificates\devicecertificateinpfxformat.pfx", "Wim#1234");
 
 
             string ClientID = Guid.NewGuid().ToString();
