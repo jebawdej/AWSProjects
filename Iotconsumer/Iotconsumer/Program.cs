@@ -7,7 +7,7 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
-
+using AWSConfigLibrary;
 
 namespace Iotconsumer
 {
@@ -15,30 +15,49 @@ namespace Iotconsumer
     {
         static void Main(string[] args)
         {
-            string IotEndPoint = "112358906604.iot.us-east-1.amazonaws.com";
+            AWSConfig awsConfig = new AWSConfig(System.Environment.CurrentDirectory + "\\DVSA\\" + "DVSAConfigFile.cfg");
 
+            //string IotEndPoint = "a1e4diayuptetn.iot.eu-west-1.amazonaws.com";
+            string IotEndPoint = awsConfig.ReadConfigValue("AWSConfig", "clientEndpoint");
+            if (String.IsNullOrEmpty(IotEndPoint))
+                Console.WriteLine("[ERROR]: Can't find clientEndpoint");
             int BrokerPort = 8883;
-            string Topic = "My_Iot_SNS_Topic/TutorialX1";
 
-            var CaCert = X509Certificate.CreateFromCertFile(@"..\..\..\..\Certificates\f489713a83-certificate.pem.crt");
-            var clientCert = new X509Certificate2(@"..\..\..\..\Certificates\devicecertificateinpfxformat.pfx", "Wim#1234");
+            string topicPrefix = awsConfig.ReadConfigValue("AWSConfig", "topicPrefix");
+            string siteNumber = awsConfig.ReadConfigValue("AWSConfig", "siteNumber");
 
 
-            string ClientID = Guid.NewGuid().ToString();
+            string topicIn = String.Format("{0}/in/{1}", topicPrefix, siteNumber);
+            string topicOut = String.Format("{0}/out/{1}", topicPrefix, siteNumber);
 
-            var IotClient = new MqttClient(IotEndPoint, BrokerPort, true, CaCert, clientCert, MqttSslProtocols.TLSv1_2);
-            IotClient.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
-            IotClient.MqttMsgSubscribed += Client_MqttMsgSubscribed;
-
-            IotClient.Connect(ClientID);
-            Console.WriteLine("Connected");
-            IotClient.Subscribe(new string[] { Topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-
-            while (true)
+            var CaCert = X509Certificate.CreateFromCertFile(@"..\..\..\..\Certificates\client180.cert.pem");
+            //var clientCert = new X509Certificate2(@"..\..\..\..\Certificates\devicecertificateClient180.pfx", "vlt#1234");//pfx file produced with openSSL
+            var clientCert = new X509Certificate2(@"..\..\..\..\Certificates\Client180.pfx", "vlt#1234"); //pfx file produced with chilkat in pfxCreator project.
+            MqttClient IotClient = null;
+            string ClientID = "client180";
+            try
             {
-                //keeping the main thread alive for the event call backs
+                IotClient = new MqttClient(IotEndPoint, BrokerPort, true, CaCert, clientCert, MqttSslProtocols.TLSv1_2);
+                IotClient.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
+                IotClient.MqttMsgSubscribed += Client_MqttMsgSubscribed;
+
+                IotClient.Connect(ClientID);
+                Console.WriteLine("Connected");
+                IotClient.Subscribe(new string[] { topicIn }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("ERROR: Could not connect/subscribe to the IotEndPoint");
+                Console.WriteLine("ERROR message: {0}",e.Message);
+                if(e.InnerException != null)
+                {
+                    Console.WriteLine("Inner exception: {0}", e.InnerException);
+                }
             }
 
+            Console.WriteLine("Press any key to quit");
+            Console.ReadKey();
+            IotClient.Disconnect();
         }
 
         private static void Client_MqttMsgSubscribed(object sender, MqttMsgSubscribedEventArgs e)
@@ -50,6 +69,5 @@ namespace Iotconsumer
         {
             Console.WriteLine("Message Received is      " + System.Text.Encoding.UTF8.GetString(e.Message));
         }
-
     }
 }

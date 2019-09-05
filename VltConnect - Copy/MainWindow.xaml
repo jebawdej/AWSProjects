@@ -1,0 +1,17 @@
+﻿<Window x:Class="VltConnect.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VltConnect"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="550" Width="960">
+    <Grid>
+        <StatusBar Height="30" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Text ="{Binding Path=StatusText, Mode=OneWay}"   />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
