@@ -22,7 +22,7 @@ namespace AWSLambdaClient
             {
                 FunctionName = "TutorialX1",
                 InvocationType = InvocationType.RequestResponse,
-                Payload = "{\"Name\": \"Wim de Jong\", \"Email\": \"wim.email.nl\"}"
+                Payload = "{\"Name\": \"Wim de Jong\", \"Email\": \"wim@email.nl\"}"
             };
 
             InvokeResponse response = client.Invoke(ir);

@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PfxCreator", "PfxCreator\Pf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VltConnectService", "VltConnectService\VltConnectService.csproj", "{375ABA8A-28CB-4674-9205-62F168653F29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSLambdaClient", "LambdaClient\AWSLambdaClient.csproj", "{4D9D1C06-0F72-4D9D-88D2-DADFB089D1AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSLambdaClient", "AWSLambdaClient\AWSLambdaClient.csproj", "{4D9D1C06-0F72-4D9D-88D2-DADFB089D1AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
