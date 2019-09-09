@@ -1,6 +1,8 @@
 # AWS Lambda Empty Function Project
 
 This project is based on this movie [example](https://www.youtube.com/watch?v=Swh5TENpoKo)
+A description of how to do it see: (https://www.dotnetforall.com/publishing-running-net-core-aws-lambda)
+To call this function from dotnet see: https://www.dotnetforall.com/call-aws-lambda-directly-using-c-code/
 
 This starter project consists of:
 * Function.cs - class file containing a class with a single function handler method
