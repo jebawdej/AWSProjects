@@ -14,7 +14,8 @@ namespace PfxCreator
         {
             Chilkat.Cert cert = new Chilkat.Cert();
 
-            bool success = cert.LoadFromFile("client180.cert.pem");
+            //bool success = cert.LoadFromFile("client180.cert.pem");
+            bool success = cert.LoadFromFile("2c27fb8e91-certificate.pem.crt");
             if (success != true)
             {
                 Console.WriteLine(cert.LastErrorText);
@@ -30,7 +31,8 @@ namespace PfxCreator
 
             //  Next, load the corresponding private key from a PEM.
             Chilkat.PrivateKey privKey = new Chilkat.PrivateKey();
-            success = privKey.LoadPemFile("client180.private.key");
+           // success = privKey.LoadPemFile("client180.private.key");
+            success = privKey.LoadPemFile("2c27fb8e91-private.pem.key");
             if (success != true)
             {
                 Console.WriteLine(privKey.LastErrorText);
@@ -49,7 +51,7 @@ namespace PfxCreator
             }
 
             //  Finally, write the PFX w/ a password.
-            success = pfx.ToFile("vlt#1234", "client180.pfx");
+            success = pfx.ToFile("vlt#1234", "2c27fb8e91.pfx");
             if (success != true)
             {
                 Console.WriteLine(pfx.LastErrorText);
